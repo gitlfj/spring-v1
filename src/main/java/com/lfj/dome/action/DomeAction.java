@@ -1,9 +1,9 @@
 package com.lfj.dome.action;
 
-import com.lfj.dome.annotation.LAutowired;
-import com.lfj.dome.annotation.LController;
-import com.lfj.dome.annotation.LRequestMapping;
-import com.lfj.dome.annotation.LRequestParam;
+import com.lfj.dome.framework.annotation.LAutowired;
+import com.lfj.dome.framework.annotation.LController;
+import com.lfj.dome.framework.annotation.LRequestMapping;
+import com.lfj.dome.framework.annotation.LRequestParam;
 import com.lfj.dome.service.IDomeService;
 
 import javax.servlet.http.HttpServletRequest;

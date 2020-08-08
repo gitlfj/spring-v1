@@ -1,11 +1,11 @@
-package com.lfj.dome.annotation;
+package com.lfj.dome.framework.annotation;
 
 import java.lang.annotation.*;
 
-@Target(ElementType.TYPE)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface LService {
+public @interface LAutowired {
 
     String value() default "";
 

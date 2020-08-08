@@ -1,4 +1,4 @@
-package com.lfj.dome.annotation;
+package com.lfj.dome.framework.annotation;
 
 
 import java.lang.annotation.*;
