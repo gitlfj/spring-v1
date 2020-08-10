@@ -7,7 +7,7 @@
     <display-name>lfj Web Application</display-name>
     <servlet>
         <servlet-name>gpmvc</servlet-name>
-        <servlet-class>com.lfj.dome.framework.LDispatchServletV1</servlet-class>
+        <servlet-class>com.lfj.dome.framework.LDispatchServletV2</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
             <param-value>application.properties</param-value>

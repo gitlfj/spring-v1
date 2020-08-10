@@ -11,41 +11,37 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ *
+ */
 @LController
-@LRequestMapping("/lfj")
-public class DomeAction {
+public class LfjController {
 
-    @LAutowired
-    private IDomeService domeService;
 
     @LAutowired
     private ILfjService lfjService;
 
     @LAutowired
-    private LfjController controller;
+    private IDomeService domeService;
 
+    /**
+     *  循环依赖
+     */
+    @LAutowired
+    private DomeAction domeAction;
 
-    @LRequestMapping("/query")
-    public void get(HttpServletRequest request, HttpServletResponse response,
-                      @LRequestParam("name") String name) throws IOException {
-
-        String result = domeService.get(name);
-        String select = lfjService.select(name);
-        response.getWriter().write(result + "_" + select + "_" + controller.get());
-    }
-
-    @LRequestMapping("/add")
+    @LRequestMapping("text/add")
     public void add(HttpServletRequest request, HttpServletResponse response,
                     @LRequestParam("name") String name) throws IOException {
+        String select = lfjService.select(name);
 
-        String result = domeService.get(name);
-        response.getWriter().write(result);
+        String s = domeService.get(name);
+
+        response.getWriter().write(select + "_" + s + "_" + domeAction.get());
     }
-
 
     public String get() {
-        return "I am is DomeAction";
+        return "I am is LfjController";
     }
-
 
 }

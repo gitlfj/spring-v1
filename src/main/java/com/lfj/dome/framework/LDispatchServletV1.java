@@ -17,7 +17,25 @@ import java.net.URL;
 import java.util.*;
 
 /**
- *  手写Spring 核心实现类
+ *  300多行代码手写Spring 核心实现原理V1版本， 此类是一个Servlet，完成了初始化操作，
+ *  和请求拦截和请求分发，这是基于Servlet实现的，需要对Servlet有一定的了解，servlet需要在
+ *  web.xml中配置使用
+ *  主要关注两个方法：
+ *  一. init() 初始化方法，里面的做的事情有：
+ *  1，加载配置文件放入到 properties中
+ *  2，通过配置文件配置的包路径扫描项目下面的类放到List中
+ *  3，通过反射技术把List的类实例化，放到ioc容器map中
+ *  4，完成依赖注入
+ *  5，完成MVC的，URL -》 Method 的Map
+ *
+ *  二. doGet() / doPost() 处理请求方法
+ *  获取请求的URL，然后根据URL找到处理的Method，然后通过反射，调用method.invoke()  完成方法的处理
+ *
+ *
+ *  缺点： 所有代码都写在一个类中，没有分层，耦合度高，违背了单一原则
+ *
+ *
+ *
  */
 public class LDispatchServletV1 extends HttpServlet {
 
@@ -46,6 +64,13 @@ public class LDispatchServletV1 extends HttpServlet {
        doPost(req, resp);
     }
 
+    /**
+     *  处理每一个请求的方法
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // 处理逻辑
@@ -108,6 +133,11 @@ public class LDispatchServletV1 extends HttpServlet {
         }
     }
 
+    /**
+     *  启动Servlet容器初始化调用的方法， 这是Servlet的内容
+     * @param config
+     * @throws ServletException
+     */
     @Override
     public void init(ServletConfig config) throws ServletException {
         // 加载配置文件
