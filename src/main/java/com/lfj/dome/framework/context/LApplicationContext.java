@@ -15,6 +15,8 @@ import java.util.*;
  */
 public class LApplicationContext {
 
+    private LBeanDefinitionReader definitionReader;
+
     /**
      *  beanDefinition 缓存
      */
@@ -33,7 +35,7 @@ public class LApplicationContext {
 
     public LApplicationContext(String ... contextConfigLocations) throws Exception {
         // 1. 加载配置文件
-        LBeanDefinitionReader definitionReader = new LBeanDefinitionReader(contextConfigLocations[0]);
+        definitionReader = new LBeanDefinitionReader(contextConfigLocations[0]);
 
         // 2. 解析配置文件，封装成BeanDefinition：factoryBeanName， beanClassName
         List<LBeanDefinition> lBeanDefinitionList = definitionReader.loadBeanDefinition();
@@ -169,5 +171,10 @@ public class LApplicationContext {
 
     public int getApplicationBeanCount() {
         return beanDefinitionMap.size();
+    }
+
+
+    public Properties getConfig() {
+        return definitionReader.getProperties();
     }
 }

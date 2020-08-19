@@ -43,6 +43,12 @@ public class DomeAction {
     }
 
 
+    @LRequestMapping("/add*.json")
+    public void json(HttpServletResponse response) throws IOException {
+        response.getWriter().write("I am is json");
+    }
+
+
     public String get() {
         return "I am is DomeAction";
     }

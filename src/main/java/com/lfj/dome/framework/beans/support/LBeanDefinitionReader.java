@@ -146,4 +146,7 @@ public class LBeanDefinitionReader {
         }
     }
 
+    public Properties getProperties() {
+        return properties;
+    }
 }
