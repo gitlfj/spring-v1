@@ -3,6 +3,9 @@ package com.lfj.dome.framework.context;
 import com.lfj.dome.framework.annotation.LAutowired;
 import com.lfj.dome.framework.annotation.LController;
 import com.lfj.dome.framework.annotation.LService;
+import com.lfj.dome.framework.aop.JdkDynamicAopProxy;
+import com.lfj.dome.framework.aop.config.LAopConfig;
+import com.lfj.dome.framework.aop.support.LAdvisedSupport;
 import com.lfj.dome.framework.beans.LBeanWrapper;
 import com.lfj.dome.framework.beans.config.LBeanDefinition;
 import com.lfj.dome.framework.beans.support.LBeanDefinitionReader;
@@ -33,7 +36,7 @@ public class LApplicationContext {
     private Map<String, Object> beanFactoryObjectCache = new HashMap<String, Object>(16);
 
 
-    public LApplicationContext(String ... contextConfigLocations) throws Exception {
+    public LApplicationContext(String ... contextConfigLocations) {
         // 1. 加载配置文件
         definitionReader = new LBeanDefinitionReader(contextConfigLocations[0]);
 
@@ -109,9 +112,42 @@ public class LApplicationContext {
         }else {
             Class<?> aClass = Class.forName(beanDefinition.getBeanClassName());
             instance = aClass.newInstance();
+
+            //=============AOP开始==============
+            // 如果满足条件就返回proxy对象
+            // 加载配置文件
+            LAdvisedSupport config = instantionAopConfig(beanDefinition);
+            config.setTargetClass(aClass);
+            config.setTarget(instance);
+
+            // 判断规则，要不要生成代理类，如果要就覆盖原来的对象， 如果不要就不做如何处理
+            if (config.pointCutMath()) {
+                instance = new JdkDynamicAopProxy().getProxy();
+            }
+
+            //==============AOP结束===================
+
             this.beanFactoryObjectCache.put(beanName, instance);
         }
         return instance;
+    }
+
+    /**
+     * 读取配置文件
+     * @param beanDefinition
+     * @return
+     */
+    private LAdvisedSupport instantionAopConfig(LBeanDefinition beanDefinition) {
+        Properties properties = this.definitionReader.getProperties();
+
+        LAopConfig aopConfig = new LAopConfig();
+        aopConfig.setPointCut(properties.getProperty("pointCut"));
+        aopConfig.setAspectClass(properties.getProperty("aspectClass"));
+        aopConfig.setAspectBefore(properties.getProperty("aspectBefore"));
+        aopConfig.setAspectAfter(properties.getProperty("aspectAfter"));
+        aopConfig.setAspectThrow(properties.getProperty("aspectThrow"));
+        aopConfig.setThrowTypeClassName(properties.getProperty("throwTypeClassName"));
+        return new LAdvisedSupport(aopConfig);
     }
 
     /**

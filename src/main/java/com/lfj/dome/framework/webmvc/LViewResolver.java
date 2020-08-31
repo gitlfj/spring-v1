@@ -14,6 +14,10 @@ public class LViewResolver {
     private File tempateRootDir;
 
 
+    /**
+     *  初始化 ViewResolver
+     * @param templateRoot
+     */
     public LViewResolver(String templateRoot) {
         URL resource = this.getClass().getClassLoader().getResource(templateRoot);
         String templateRootPath = resource.getFile();

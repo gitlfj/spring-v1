@@ -30,6 +30,9 @@ public class LDispatchServletV2 extends HttpServlet {
 
     private LApplicationContext applicationContext;
 
+    /**
+     *  handlerMapping
+     */
     private List<LHandlerMapping> handlerMappingList = new ArrayList<LHandlerMapping>(16);
 
     private Map<LHandlerMapping, LHandlerAdapter> handlerAdapterMap = new HashMap<LHandlerMapping, LHandlerAdapter>(16);
@@ -174,6 +177,10 @@ public class LDispatchServletV2 extends HttpServlet {
 //        initFlashMapManager(context);
     }
 
+    /**
+     *  初始化 ViewResolvers 主要是解析模版
+     * @param context
+     */
     private void initViewResolvers(LApplicationContext context) {
         String templateRoot = context.getConfig().getProperty("templateRoot");
 
