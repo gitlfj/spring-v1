@@ -6,12 +6,12 @@ package com.lfj.dome.framework.beans.config;
 public class LBeanDefinition {
 
     /**
-     *  bean name
+     *  bean name 就是类名小写，Spring管理的bean名称默认类名小写，也可以自己定义
      */
     private String factoryBeanName;
 
     /**
-     *  class 全路径
+     *  class 全路径,例如：com.lfj.dome.action.PageAction
      */
     private String beanClassName;
 

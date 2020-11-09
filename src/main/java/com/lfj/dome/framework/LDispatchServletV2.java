@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
  * 1. 调用 Servlet.init() 方法的时候 初始化Spring容器 LApplicationContext
  * 2. BeanDefinitionReader 负责读取配置，扫描bean，封装成一个BeanDefinition
  * 3. 调用getBean() 方法  负责bean初始化，和依赖注入
- *
+ * @author lfj
  *
  */
 public class LDispatchServletV2 extends HttpServlet {
@@ -35,9 +35,16 @@ public class LDispatchServletV2 extends HttpServlet {
      */
     private List<LHandlerMapping> handlerMappingList = new ArrayList<LHandlerMapping>(16);
 
+    /**
+     *
+     */
     private Map<LHandlerMapping, LHandlerAdapter> handlerAdapterMap = new HashMap<LHandlerMapping, LHandlerAdapter>(16);
 
+    /**
+     *
+     */
     private List<LViewResolver> viewResolvers = new ArrayList<LViewResolver>();
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -46,14 +53,14 @@ public class LDispatchServletV2 extends HttpServlet {
 
     /**
      *  处理每一个请求的方法，并且找到对应处理的方法处理
-     * @param req
-     * @param resp
-     * @throws ServletException
-     * @throws IOException
+     * @param req req
+     * @param resp resp
+     * @throws IOException IOException
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
+            // 委派，根据URL找到一个Method
             doDispatch(req, resp);
         } catch (Exception e) {
             try {
@@ -97,8 +104,6 @@ public class LDispatchServletV2 extends HttpServlet {
         if (handlerAdapterMap.isEmpty()) {return null;}
         return handlerAdapterMap.get(handlerMapping);
     }
-
-
     private void processDispatchResult(HttpServletRequest req,
                                        HttpServletResponse resp,
                                        LModelAndView mv) throws Exception {
@@ -133,23 +138,25 @@ public class LDispatchServletV2 extends HttpServlet {
     }
 
     /**
-     *  启动Servlet容器初始化调用的方法
-     * @param config
-     * @throws ServletException
+     *  启动Servlet容器初始化调用的方法, spring 容器的人口
+     * @param config  config
      */
     @Override
-    public void init(ServletConfig config) throws ServletException {
-
-        //初始化ApplicationContext
+    public void init(ServletConfig config) {
         try {
-            applicationContext = new LApplicationContext(config.getInitParameter("contextConfigLocation"));
+            // 会去读取Servlet容器 web.xml配置文件配置的配置文件名
+            String contextConfigLocation = config.getInitParameter("contextConfigLocation");
+            // 初始化ApplicationContext
+            if (contextConfigLocation == null || "".equals(contextConfigLocation)) {
+                throw new RuntimeException("请在web.xml中配置：contextConfigLocation");
+            }
+            applicationContext = new LApplicationContext(contextConfigLocation);
         } catch (Exception e) {
             e.printStackTrace();
         }
         // 初始化mvc组件
         initStrategies(applicationContext);
         System.out.println("Spring framework 初始化完成... ");
-
     }
 
     /**
@@ -243,8 +250,8 @@ public class LDispatchServletV2 extends HttpServlet {
 
     /**
      *  将字符串首字母转大写
-     * @param toLowerCase
-     * @return
+     * @param toLowerCase 字符串
+     * @return String
      */
     private String toLowerCase(String toLowerCase) {
         char[] chars = toLowerCase.toCharArray();

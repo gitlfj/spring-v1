@@ -34,8 +34,7 @@ import java.util.*;
  *
  *  缺点： 所有代码都写在一个类中，没有分层，耦合度高，违背了单一原则
  *
- *
- *
+ * @author lfj
  */
 public class LDispatchServletV1 extends HttpServlet {
 
@@ -93,20 +92,19 @@ public class LDispatchServletV1 extends HttpServlet {
         //获取形参列表
         Class<?> [] parameterTypes = method.getParameterTypes();
 
-        //参数
+        //请求参数
         Object [] paramValues = new Object[parameterTypes.length];
-
+        // 循环赋值
         for (int i = 0; i < parameterTypes.length; i++) {
-
-            Class paramterType = parameterTypes[i];
-            if(paramterType == HttpServletRequest.class){
+            Class paramType = parameterTypes[i];
+            if(paramType == HttpServletRequest.class){
                 paramValues[i] = req;
-            }else if(paramterType == HttpServletResponse.class){
+            }else if(paramType == HttpServletResponse.class){
                 paramValues[i] = resp;
-            }else if(paramterType == String.class){
+            }else if(paramType == String.class){
                 //通过运行时的状态去拿到你
                 Annotation[] [] pa = method.getParameterAnnotations();
-
+                System.out.println("pa = " + pa);
                 for (int j = 0; j < pa.length ; j ++) {
                     for(Annotation a : pa[i]){
                         if(a instanceof LRequestParam){
@@ -124,9 +122,8 @@ public class LDispatchServletV1 extends HttpServlet {
         }
         String beanName = toLowerCase(method.getDeclaringClass().getSimpleName());
         try {
-            method.invoke(ioc.get(beanName),paramValues);
+            method.invoke(ioc.get(beanName), paramValues);
         } catch (Exception e) {
-            e.printStackTrace();
             String s = "500, detail :" + e.getStackTrace().toString();
             resp.getWriter().write(s);
             return;

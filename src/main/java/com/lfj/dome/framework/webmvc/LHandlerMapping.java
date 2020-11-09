@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 /**
  *  自定义HandlerMapping, 请求URL和方法的对应关系
+ * @author lifangjin
  */
 public class LHandlerMapping {
 
