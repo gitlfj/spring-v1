@@ -23,13 +23,22 @@ public class PageAction {
     IQueryService queryService;
 
     @LRequestMapping("/first.html")
-    public LModelAndView query(@LRequestParam("teacher") String teacher){
+    public LModelAndView query(@LRequestParam("teacher") String teacher) {
+        if ("".equals(teacher) || teacher == null) {
+            teacher = "Tom";
+        }
         String result = queryService.query(teacher);
-        Map<String,Object> model = new HashMap<String,Object>();
+        Map<String,Object> model = new HashMap<String,Object>(16);
         model.put("teacher", teacher);
         model.put("data", result);
         model.put("token", "123456");
-        return new LModelAndView("first.html",model);
+        return new LModelAndView("first.html", model);
+    }
+
+
+    @LRequestMapping("/exception")
+    public void exception() {
+        queryService.aopExceptionTest();
     }
 
 }

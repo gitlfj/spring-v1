@@ -124,28 +124,31 @@ public class LApplicationContext {
      * @throws Exception  Exception
      */
     private Object instantiateInstance(LBeanDefinition beanDefinition, String beanName) throws Exception{
-        Object instance;
-        if (this.beanFactoryObjectCache.containsKey(beanName)) {
-            instance =  this.beanFactoryObjectCache.get(beanName);
-        }else {
-            Class<?> aClass = Class.forName(beanDefinition.getBeanClassName());
-            instance = aClass.newInstance();
-
-            //=============AOP开始==============
-            // 如果满足条件就返回proxy对象
-            // 加载配置文件
-            LAdvisedSupport config = instanceAopConfig(beanDefinition);
-            config.setTargetClass(aClass);
-            config.setTarget(instance);
-
-            // 判断规则，要不要生成代理类，如果要就覆盖原来的对象， 如果不要就不做如何处理
-            if (config.pointCutMath()) {
-                instance = new JdkDynamicAopProxy().getProxy();
+        Object instance = null;
+        try {
+            if (this.beanFactoryObjectCache.containsKey(beanName)) {
+                instance =  this.beanFactoryObjectCache.get(beanName);
+            }else {
+                Class<?> aClass = Class.forName(beanDefinition.getBeanClassName());
+                instance = aClass.newInstance();
+    
+                //=============AOP开始==============
+                // 如果满足条件就返回proxy对象
+                // 加载配置文件
+                LAdvisedSupport config = instanceAopConfig(beanDefinition);
+                config.setTargetClass(aClass);
+                config.setTarget(instance);
+    
+                // 判断规则，要不要生成代理类，如果要就覆盖原来的对象， 如果不要就不做如何处理
+                if (config.pointCutMath()) {
+                    JdkDynamicAopProxy jdkDynamicAopProxy = new JdkDynamicAopProxy(config);
+                    instance =  jdkDynamicAopProxy.getProxy();
+                }
+                //==============AOP结束===================
+                this.beanFactoryObjectCache.put(beanName, instance);
             }
-
-            //==============AOP结束===================
-
-            this.beanFactoryObjectCache.put(beanName, instance);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return instance;
     }

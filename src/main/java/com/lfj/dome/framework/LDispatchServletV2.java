@@ -113,22 +113,22 @@ public class LDispatchServletV2 extends HttpServlet {
         for (LViewResolver viewResolver : this.viewResolvers) {
             LView view = viewResolver.resolveViewName(mv.getViewName());
             //直接往浏览器输出
-            view.render(mv.getModel(),req,resp);
+            view.render(mv.getModel(), req, resp);
             return;
         }
     }
 
     /**
      *  获取handler
-     * @param req
+     * @param req req
      * @return
      */
     private LHandlerMapping getHandler(HttpServletRequest req) {
         if (handlerMappingList.isEmpty()) {return null;}
 
-        String requestURI = req.getRequestURI();
+        String requestUri = req.getRequestURI();
         String contextPath = req.getContextPath();
-        String url = requestURI + contextPath;
+        String url = requestUri + contextPath;
         for (LHandlerMapping handlerMapping : handlerMappingList) {
             Matcher matcher = handlerMapping.getPattern().matcher(url);
             if (!matcher.matches()) { continue; }

@@ -76,7 +76,7 @@ public class LAdvisedSupport {
 
                 Matcher matcher = pointCutPattern.matcher(methodString);
                 if(matcher.matches()){
-                    Map<String, LAdvice> advices = new HashMap<String, LAdvice>();
+                    Map<String, LAdvice> advices = new HashMap<String, LAdvice>(16);
 
                     if(!(null == config.getAspectBefore() || "".equals(config.getAspectBefore()))){
                         advices.put("before",new LAdvice(aspectClass.newInstance(),aspectMethods.get(config.getAspectBefore())));
@@ -87,14 +87,13 @@ public class LAdvisedSupport {
                     if(!(null == config.getAspectThrow() || "".equals(config.getAspectThrow()))){
                         LAdvice advice = new LAdvice(aspectClass.newInstance(),aspectMethods.get(config.getAspectThrow()));
                         advice.setThrowName(config.getThrowTypeClassName());
-                        advices.put("afterThrow",advice);
+                        advices.put("afterThrowing",advice);
                     }
 
                     //跟目标代理类的业务方法和Advices建立一对多个关联关系，以便在Porxy类中获得
                     methodCache.put(method,advices);
                 }
             }
-
 
         }catch(Exception e){
             e.printStackTrace();

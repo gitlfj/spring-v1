@@ -9,6 +9,15 @@ public interface IQueryService {
 	
 	/**
 	 * 查询
+	 * @param name name
+	 * @return String
 	 */
-	public String query(String name);
+	String query(String name);
+
+	/**
+	 * AOP异常测试
+	 * @return String
+	 */
+	String aopExceptionTest();
+
 }

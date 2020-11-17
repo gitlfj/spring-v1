@@ -17,15 +17,15 @@ public class LView {
     private File viewFile;
 
 
-    public LView(File templateFile) {
+    LView(File templateFile) {
         this.viewFile = templateFile;
     }
 
     public void render(Map<String, ?> model, HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         RandomAccessFile ra = new RandomAccessFile(this.viewFile,"r");
 
-        String line = null;
+        String line;
         while (null != (line = ra.readLine())){
             line = new String(line.getBytes("ISO-8859-1"),"utf-8");
             Pattern pattern = Pattern.compile("￥\\{[^\\}]+\\}",Pattern.CASE_INSENSITIVE);
@@ -43,8 +43,13 @@ public class LView {
         resp.getWriter().write(sb.toString());
     }
 
-    //处理特殊字符
-    public static String makeStringForRegExp(String str) {
+
+    /**
+     * 处理特殊字符
+     * @param str 需要处理的字符串
+     * @return 处理后的字符串
+     */
+    private static String makeStringForRegExp(String str) {
         return str.replace("\\", "\\\\").replace("*", "\\*")
                 .replace("+", "\\+").replace("|", "\\|")
                 .replace("{", "\\{").replace("}", "\\}")

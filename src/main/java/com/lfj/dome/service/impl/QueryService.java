@@ -17,11 +17,21 @@ public class QueryService implements IQueryService {
 	/**
 	 * 查询
 	 */
+	@Override
 	public String query(String name) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String time = sdf.format(new Date());
-		String json = "{name:\"" + name + "\",time:\"" + time + "\"}";
-		return json;
+		return "{name:\"" + name + "\",time:\"" + time + "\"}";
+	}
+
+	/**
+	 * AOP异常测试
+	 *
+	 * @return String
+	 */
+	@Override
+	public String aopExceptionTest() {
+		throw new NullPointerException("我是AOP故意抛出的异常");
 	}
 
 }

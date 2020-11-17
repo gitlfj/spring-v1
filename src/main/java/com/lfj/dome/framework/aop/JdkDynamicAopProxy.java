@@ -18,6 +18,11 @@ public class JdkDynamicAopProxy implements InvocationHandler {
     private LAdvisedSupport config;
 
 
+    public JdkDynamicAopProxy(LAdvisedSupport config) {
+        this.config = config;
+    }
+
+
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
@@ -31,7 +36,7 @@ public class JdkDynamicAopProxy implements InvocationHandler {
 
             invokeAdivce(advices.get("after"));
         }catch (Exception e){
-            invokeAdivce(advices.get("afterThrow"));
+            invokeAdivce(advices.get("afterThrowing"));
             throw e;
         }
 
@@ -50,7 +55,6 @@ public class JdkDynamicAopProxy implements InvocationHandler {
     }
 
     public Object getProxy() {
-        return Proxy.newProxyInstance(this.getClass().getClassLoader(),
-                this.config.getTargetClass().getInterfaces(),this);
+        return Proxy.newProxyInstance(this.getClass().getClassLoader(), this.config.getTargetClass().getInterfaces(),this);
     }
 }
