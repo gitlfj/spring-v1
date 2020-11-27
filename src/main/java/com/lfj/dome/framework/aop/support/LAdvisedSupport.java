@@ -111,7 +111,11 @@ public class LAdvisedSupport {
         return cache;
     }
 
-    //给ApplicationContext首先IoC中的对象初始化时调用，决定要不要生成代理类的逻辑
+
+    /**
+     * 给ApplicationContext首先IoC中的对象初始化时调用，决定要不要生成代理类的逻辑
+     * @return b
+     */
     public boolean pointCutMath() {
         return pointCutClassPattern.matcher(this.targetClass.toString()).matches();
     }

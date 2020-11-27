@@ -2,6 +2,7 @@ package com.lfj.dome.framework.aop.config;
 
 /**
  * AOP config 配置
+ * @author Administrator
  */
 public class LAopConfig {
 

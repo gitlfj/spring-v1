@@ -2,6 +2,10 @@ package com.lfj.dome.framework.aop.aspect;
 
 import java.lang.reflect.Method;
 
+/**
+ * 用于通知回调
+ * @author Administrator
+ */
 public class LAdvice {
 
     private Object aspect;

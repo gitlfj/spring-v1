@@ -1,5 +1,8 @@
 package com.lfj.dome.framework.aop.aspect;
 
+/**
+ *
+ */
 public class LogAspect {
 
 

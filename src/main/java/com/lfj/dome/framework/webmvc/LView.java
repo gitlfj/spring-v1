@@ -16,6 +16,10 @@ public class LView {
 
     private File viewFile;
 
+    /**
+     * 正则匹配
+     */
+    private Pattern pattern = Pattern.compile("￥\\{[^\\}]+\\}", Pattern.CASE_INSENSITIVE);
 
     LView(File templateFile) {
         this.viewFile = templateFile;
@@ -28,7 +32,6 @@ public class LView {
         String line;
         while (null != (line = ra.readLine())){
             line = new String(line.getBytes("ISO-8859-1"),"utf-8");
-            Pattern pattern = Pattern.compile("￥\\{[^\\}]+\\}",Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(line);
             while (matcher.find()){
                 String paramName = matcher.group();
@@ -50,13 +53,21 @@ public class LView {
      * @return 处理后的字符串
      */
     private static String makeStringForRegExp(String str) {
-        return str.replace("\\", "\\\\").replace("*", "\\*")
-                .replace("+", "\\+").replace("|", "\\|")
-                .replace("{", "\\{").replace("}", "\\}")
-                .replace("(", "\\(").replace(")", "\\)")
-                .replace("^", "\\^").replace("$", "\\$")
-                .replace("[", "\\[").replace("]", "\\]")
-                .replace("?", "\\?").replace(",", "\\,")
-                .replace(".", "\\.").replace("&", "\\&");
+        return str.replace("\\", "\\\\")
+                .replace("*", "\\*")
+                .replace("+", "\\+")
+                .replace("|", "\\|")
+                .replace("{", "\\{")
+                .replace("}", "\\}")
+                .replace("(", "\\(")
+                .replace(")", "\\)")
+                .replace("^", "\\^")
+                .replace("$", "\\$")
+                .replace("[", "\\[")
+                .replace("]", "\\]")
+                .replace("?", "\\?")
+                .replace(",", "\\,")
+                .replace(".", "\\.")
+                .replace("&", "\\&");
     }
 }

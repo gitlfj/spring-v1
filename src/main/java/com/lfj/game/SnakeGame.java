@@ -65,6 +65,11 @@ public class SnakeGame extends MyFrame {
         // 展示分数
         drawScore(g);
         if (!mySnake.isLive) {
+            try {
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             System.exit(0);
         }
     }
@@ -177,7 +182,7 @@ class MySnake extends SnakeObject {
     /**
      * 分数
      */
-    public int score = 0;
+    int score = 0;
     /**
      * 旋转后的蛇头图片
      */
@@ -193,6 +198,7 @@ class MySnake extends SnakeObject {
         this.isLive = true;
         this.x = x;
         this.y = y;
+        // 蛇身照片
         this.image = ImageUtils.getImageMap().get("zhan");
         this.width = image.getWidth(null);
         this.height = image.getHeight(null);

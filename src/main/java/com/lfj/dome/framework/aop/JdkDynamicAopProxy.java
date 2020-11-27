@@ -11,6 +11,7 @@ import java.util.Map;
 
 /**
  * 代理类
+ * @author Administrator
  */
 public class JdkDynamicAopProxy implements InvocationHandler {
 
